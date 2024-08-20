@@ -15,6 +15,7 @@ services:
   api:
     build:
       context: ./projects/api
+      dockerfile: Dockerfile.${DK_ENVIRONMENT}
       args:
         DK_UID: ${DK_UID}
         DK_GID: ${DK_GID}

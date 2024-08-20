@@ -30,8 +30,15 @@
       }
     },
     "packageManager": {
+      "submodules": {
+        "projects/api": {
+          "exec": "yarn"
+        }
+      },
       "default": {
-        "exec": "npm"
+        "exec": "yarn",
+        "install_args": [],
+        "build_args": []
       }
     }
   },
