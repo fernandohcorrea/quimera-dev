@@ -1,0 +1,4 @@
+[submodule "projects/api"]
+	path = projects/api
+	url = git@github.com:fernandohcorrea/quimera-api.git
+	branch = main
