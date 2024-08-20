@@ -1,2 +1,13 @@
 bin
 node_modules
+
+# IDEs
+.vscode/settings.json
+
+
+# Bolumes Docker
+docker/volumes/mariadb/*
+!.gitkeep
+
+# Environment
+.env
