@@ -1,0 +1,18 @@
+frontend:
+  build:
+    context: ./projects/frontend
+    target: ${REACT_APP_ENV}
+    args:
+      DK_UID: ${DK_UID}
+      DK_GID: ${DK_GID}
+  container_name: "${DK_PROJECT_NAME}-front"
+  ports:
+    - "${REACT_APP_PORT}:3000"
+  volumes:
+    - "${PWD}/project/front:/home/node/project"
+  networks:
+    - backend
+  depends_on:
+    api:
+      condition: service_started
+  command: [ "npm", "run", "start:dev" ]

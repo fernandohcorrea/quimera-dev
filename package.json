@@ -1,0 +1,53 @@
+{
+  "name": "quimera",
+  "version": "1.0.0",
+  "description": "Quimera developer tools",
+  "main": "quimera",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json",
+    "prestart": "npm run build",
+    "start": "node bin/quimera.js"
+  },
+  "author": "fernandohcorrea@gmail.com",
+  "license": "ISC",
+  "quimera": {
+    "dockerCompose": {
+      "dockerComposeVersion": "3.9",
+      "command": "docker compose",
+      "volumes": [
+        {
+          "path": "./docker/volumes/storagefs"
+        },
+        {
+          "path": "./docker/volumes/mariadb"
+        }
+      ]
+    },
+    "git": {
+      "default": {
+        "branch": "development"
+      }
+    },
+    "packageManager": {
+      "default": {
+        "exec": "npm"
+      }
+    }
+  },
+  "dependencies": {
+    "@types/node": "^18.7.14",
+    "ansi-colors": "^4.1.3",
+    "commander": "^10.0.0",
+    "json-to-pretty-yaml": "^1.2.2",
+    "nconf": "^0.12.0",
+    "readline-sync": "^1.4.10",
+    "shelljs": "^0.8.5",
+    "typescript": "^4.8.2"
+  },
+  "devDependencies": {
+    "@types/nconf": "^0.10.3",
+    "@types/readline-sync": "^1.4.4",
+    "@types/shelljs": "^0.8.11"
+  }
+}

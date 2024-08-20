@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "outDir": "bin",
+    "strict": true,
+    "allowJs": false,
+    "target": "es2020",
+    "module": "esnext",
+    "lib": [
+      "ES2020"
+    ],
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "rootDir": "ttools"
+  },
+  "include": [
+    "ttools/**/*.ts",
+    "ttools/types/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bin"
+  ]
+}

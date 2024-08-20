@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Don't touch in this variables, pls.
+COLS=$(tput cols)
+SCRIPT_NAME=$(basename "$0")
+SCRIPT_PATH="$(dirname "${BASH_SOURCE[0]}")"
+WORK_PATH="$(realpath "${SCRIPT_PATH}")"
+
+function RUN {
+  "$@"
+
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+}
+
+function __ {
+  STEP=$((${STEP}+1))
+  str_repeat '=' ${COLS}
+  echo "= ${STEP}) $1"
+  str_repeat '=' ${COLS}
+}
+
+function str_repeat {
+    for (( i = 0; i < $2; i++ )); do
+        echo -n $1
+    done
+    echo ""
+}
+
+function installDependencies {
+    RUN npm i --prefix=${WORK_PATH}
+}
+
+function buildBin {
+    RUN cd ${WORK_PATH} && \
+        rm -fr "${WORK_PATH}/bin" && \
+        npm run build && cd $PWD;
+}
+
+if [ ! -d "${WORK_PATH}/bin" ]; then
+    installDependencies
+    buildBin
+fi
+
+if [ "${NODE_ENV}" == 'development' ]; then
+    installDependencies
+    buildBin
+fi
+
+node "${WORK_PATH}/bin/${SCRIPT_NAME}" $@

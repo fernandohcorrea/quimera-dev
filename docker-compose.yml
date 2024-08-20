@@ -1,0 +1,59 @@
+x-api-environment: &default-api-environment
+  NODE_ENV: ${DK_ENVIRONMENT}
+  API_PORT: ${API_PORT}
+  API_DEBUG_PORT: ${API_DEBUG_PORT}
+  API_JWT_SECRET: ${API_JWT_SECRET}
+  API_JWT_EXPIRATION: ${API_JWT_EXPIRATION}
+  MARIADB_HOST: ${MARIADB_HOST}
+  MARIADB_PORT: ${MARIADB_PORT}
+  MARIADB_USER: ${MARIADB_USER}
+  MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+  MARIADB_DATABASE: ${MARIADB_DATABASE}
+  STORAGE_PATH: "/mnt/storagefs"
+
+services:
+  api:
+    build:
+      context: ./projects/api
+      args:
+        DK_UID: ${DK_UID}
+        DK_GID: ${DK_GID}
+    container_name: ${DK_PROJECT_NAME}_api
+    ports:
+      - "${API_PORT}:${API_PORT}"
+      - "${API_DEBUG_PORT}:${API_DEBUG_PORT}"
+    environment: *default-api-environment
+    volumes:
+      - ${PWD}/projects/api:/home/node/project
+      - ${DK_STORAGE_FS}:/mnt/storagefs
+    depends_on:
+      mariadb:
+        condition: service_started
+    networks:
+      - backend
+    command: ["yarn", "start:dev"]
+
+  mariadb:
+    build:
+      context: ./docker/services/mariadb
+      args:
+        DK_UID: ${DK_UID}
+        DK_GID: ${DK_GID}
+    container_name: ${DK_PROJECT_NAME}_mariadb
+    volumes:
+      - ${DK_VOLUMES}/mariadb:/var/lib/mysql
+    ports:
+      - "${MARIADB_PORT}:${MARIADB_PORT}"
+    environment:
+      MARIADB_ROOT_HOST: ${MARIADB_HOST}
+      MARIADB_PORT: ${MARIADB_PORT}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
